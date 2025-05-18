@@ -1,12 +1,10 @@
-import {loginDto}  from "../dto/UserDto";
-
-interface IUser {
+export interface IUser {
     id: number;
     name: string;
     email: string;
-    birthdate: string;
+    birthdate: Date;
     nDni: number;
-    login: loginDto;
+    credentialsId:number;
 }
-export default IUser;
+
  
