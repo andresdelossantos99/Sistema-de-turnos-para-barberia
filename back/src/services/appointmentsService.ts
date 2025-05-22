@@ -1,37 +1,47 @@
 import { AppointmentsRegisterDto } from "../dto/AppointmentRegisterDto";
-import {IAppointments, Status} from "../interfaces/IAppointments";
+import { Status} from "../interfaces/IAppointments";
 import { getUserByIdService } from "./userService";
+import { AppointmentRepository } from "../repositories/Appointment_Repository"
+import { validateAppointmentCanBeCancelled } from "../utils/validateCancelation";
+import { CustomError } from "../utils/customError";
+import { Appointment } from "../entities/Appointment.entity";
 
 
-const appointments: IAppointments[] = []
-
-let id: number = 1;
-
-export const getAppointmentService = async ():Promise<IAppointments[]> =>{
-  return appointments
+export const getAppointmentService = async ():Promise<Appointment[]> =>{
+  const appointments:Appointment[] = await AppointmentRepository.find()
+  if(appointments.length === 0)throw new CustomError(404, "No hay turnos registrados")
+    return appointments  
 }
-export const getAppointmentsByIdService = async(id: number):Promise<IAppointments>=> {
-  const appointmentFound = appointments.find(app=> app.id === id )
+export const getAppointmentsByIdService = async(id: number):Promise<Appointment>=> {
+  const appointmentFound = await AppointmentRepository.findOne({
+    where:{
+      id
+    }   
+  } )
   if(!appointmentFound) throw Error (`La cita con Id: ${id} no fue encontrado`)
   return appointmentFound;
 }       
-export const registerAppointmentsService = async (appointment: AppointmentsRegisterDto)=> {
- const userFound = await getUserByIdService(appointment.userId)
-if (!userFound) { throw new Error(`El usuario con el Id:${appointment.userId} no fue encontrado`);
+export const registerAppointmentsService = async (appointment: AppointmentsRegisterDto):Promise<Appointment>=> {
+await getUserByIdService(appointment.userId)
+    AppointmentRepository.validateAllowAppointment(appointment.date, appointment.time)
+    await AppointmentRepository.validateExistingAppointment(appointment.userId, appointment.date, appointment.time)
+    const newAppointment = AppointmentRepository.create({
+        date: appointment.date,
+        time: appointment.time,
+        user:{
+            id: appointment.userId
+        }
+    })
+    return await AppointmentRepository.save(newAppointment)
 }
-const appointmentFound = appointments.find(app => app.userId === appointment.userId && app.time === appointment.time && new Date(app.date).getTime()=== new Date(appointment.date).getTime())
-if(appointmentFound) throw Error (`La cita ya existe`)
-  const newAppointment: IAppointments = {
-    id: id++,
-    date: appointment.date,
-    time: appointment.time,
-    status: Status.active,
-    userId: userFound?.id || 0
-  }
-  appointments.push(newAppointment);
-  return newAppointment;
+export const cancelAppointmentsService = async (id: number):Promise<void> => {
+  const appointmentFound = await AppointmentRepository.findOne({
+        where: {
+            id
+        }
+    })
+    if(!appointmentFound) throw new CustomError (400, "El turno no existe")
+    validateAppointmentCanBeCancelled(appointmentFound.date, appointmentFound.time)
+    appointmentFound.status = Status.cancelled
+    await AppointmentRepository.save(appointmentFound)
 }
-export const cancelAppointmentsService = async (id: number):Promise<IAppointments> => {
-  const appointmentFound = await getAppointmentsByIdService(id)
-  appointmentFound.status = Status.cancelled
-  return appointmentFound}

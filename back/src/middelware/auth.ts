@@ -7,5 +7,4 @@
 // if(token==="autenticado")next()
 //     else res.status(400).json({mesasage:"Error. Falta autenticacion"})
 // }
-
-// export default auth
+// export {auth}       

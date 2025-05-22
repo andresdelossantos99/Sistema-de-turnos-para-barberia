@@ -2,7 +2,7 @@ export interface UserRegisterDto{
     name : string,
     nDni: number,
     email: string,
-    birthdate: string,
+    birthdate: Date,
     username: string,   
     password: string,
     }
@@ -12,6 +12,8 @@ export interface UserDto{
     email: string;
 }
 export interface UserLoginDto{
-    email: string;
+    username: string;
     password: string;
 }
+
+  

@@ -4,7 +4,7 @@ export interface IUser {
     email: string;
     birthdate: Date;
     nDni: number;
-    credentialsId:number;
+    
 }
 
  
