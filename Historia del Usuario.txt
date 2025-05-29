@@ -1,0 +1,42 @@
+    1. Como �usuario invitado� quiero "poder registrarme� para �crear una cuenta nueva�
+       
+    2. Como �usuario registrado� quiero �poder ingresar a mi cuenta�para �agendar un nuevo turno�
+
+    3. Como usuario registrado quiero poder iniciar sesi�n con mis credenciales
+       
+    4. Como usuario registrado quiero poder cerrar sesi�n cuando deje de usar la plataforma
+       
+    5. Como usuario registrado quiero poder reservar un turno
+       
+    6. Como usuario registrado quiero poder cancelar un turno
+       
+    7. Como usuario registrado quiero poder ver mi historial de turnos.
+       
+    8.  Como usuario registrado quiero poder ver el horario de atenci�n del comercio
+ 
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    1) 
