@@ -22,7 +22,7 @@ export default function AgendarTurno(){
         const user = JSON.parse(userJSON)
             const schedule ={
             ...values,
-            userId: user.id
+            userId: user.data.id
         }
            axios.post('http://localhost:3000/appointments/schedule',schedule )
           .then((res)=> {
