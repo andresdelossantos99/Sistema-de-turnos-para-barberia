@@ -16,7 +16,8 @@ export const getAppointmentsByIdService = async(id: number):Promise<Appointment>
   const appointmentFound = await AppointmentRepository.findOne({
     where:{
       id
-    }   
+    },   
+    relations: ["user"]
   } )
   if(!appointmentFound) throw Error (`La cita con Id: ${id} no fue encontrado`)
   return appointmentFound;
