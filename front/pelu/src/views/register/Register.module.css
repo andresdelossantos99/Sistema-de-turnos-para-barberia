@@ -15,8 +15,8 @@ label {
 
 input {
   width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.25rem;
+  padding: 2rem;
+ margin-top: 2em;
 }
 
 .error {
@@ -25,17 +25,19 @@ input {
   margin-top: 0.25rem;
 }
 .formButton {
+  margin-top: 1em ;
   width: 100%;
   background: linear-gradient(135deg, #ff7998, #e63ce3); 
   color: #000000;
   border: none;
-  padding: 12px 24px;
+  padding: 12px  24px;
   font-size: 22px;
   font-weight: bold;
   border-radius: 8px;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
+ 
 }
 
 .formButton:hover {

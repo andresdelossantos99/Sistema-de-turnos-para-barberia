@@ -16,7 +16,7 @@ export default function Turno({ id, date, time, status, setTurnos}) {
         color: "red",
         title: "Turno cancelado correctamente",
       });
-    }catch (err) {
+    }catch{
       Swal.fire({
         icon: "error",
         title: "Error al cancelar el turno. Intentalo nuevamente.",

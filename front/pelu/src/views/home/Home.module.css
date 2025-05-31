@@ -1,7 +1,38 @@
-.leyend{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 12px;
-    background-color: aqua;
+.container {
+  background-color: rgba(255, 255, 255, 0.6);
+  min-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  color: #333;
+  text-align: center;
+  max-width: 1200px; 
+  margin: 0 auto;
+  border-radius: 10px;
+  width: 90%;
+}
+
+.leyend {
+  background-color: rgba(255, 255, 255, 0.6); 
+  border-radius: 8px;
+  display: inline-block;
+  font-size: 1.5rem;
+  color: #000000;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  padding: 12px 24px;
+}
+
+.welcome {
+ 
+  background: linear-gradient(135deg, #ff7998, #e63ce3); 
+  color: #000000;
+  border: none;
+  padding: 12px 24px;
+  font-size: 22px;
+  font-weight: bold;
+  border-radius: 8px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }

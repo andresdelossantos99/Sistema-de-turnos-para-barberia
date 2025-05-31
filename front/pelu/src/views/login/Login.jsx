@@ -27,7 +27,7 @@ const navigate = useNavigate()
           localStorage.setItem('user', JSON.stringify(res.data))
                 swal.fire({
                 title: 'Login exitoso',
-                text: 'Bienvenido de nuevo.',
+                text: 'Bienvenidx',
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
               }).then(()=>{
