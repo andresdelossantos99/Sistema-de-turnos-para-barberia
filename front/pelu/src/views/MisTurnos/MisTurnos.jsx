@@ -36,7 +36,7 @@ useEffect(() => {
     return(
        <div className={Styles.container}>
         <div className={Styles.header}>
-          <h1>Mis Turnos</h1>
+          <h1 className={Styles.text}>Mis Turnos</h1>
         </div>
         <div className={Styles.content}>
           {loading?(

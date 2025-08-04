@@ -1,5 +1,5 @@
 .content{
-     display: flex;
+  display: flex;
   flex-wrap: wrap;
   gap: 2rem;
   justify-content: center;
@@ -7,11 +7,11 @@
 .container {
   padding: 2rem;
 }
-
 .header {
-  text-align:start;
+  display: flex;
   margin-bottom: 1%;
-}.formButton {
+}
+.formButton {
   width: 100%;
   background: linear-gradient(135deg, #ff7998, #e63ce3); 
   color: #000000;
@@ -24,7 +24,6 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
 }
-
 .formButton:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
@@ -33,4 +32,10 @@
 .formButton:active {
   transform: scale(0.97);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.text{
+  background-color: #e63ce3;
+  width: fit-content;
+  border-radius: 12px;
+  padding:  0px 12px 0px 12px;
 }
