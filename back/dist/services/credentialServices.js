@@ -8,26 +8,51 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCredentialService = void 0;
-const credentials = [];
-let id = 1;
-const checkUserExist = (username) => {
-    const usernameFound = credentials.find(cred => cred.username === username);
-    if (usernameFound)
-        throw Error(`el usuario con username ${username} ya existe, intente con otro nombre de usuario`);
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-// export const checkUserCredential = async (username:string, password: string) =>{
-//     const usernameFound: ICredential|undefined  = credentials.find(cred=> cred.username === username)
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getCredentialService = exports.checkUserCredentials = void 0;
+const data_source_1 = require("../config/data-source");
+const customError_1 = require("../utils/customError");
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const bycrypt = (password) => __awaiter(void 0, void 0, void 0, function* () {
+    const salt = yield bcryptjs_1.default.genSalt(10);
+    const hash = yield bcryptjs_1.default.hash(password, salt);
+    return hash;
+});
+const checkUserExist = (username) => __awaiter(void 0, void 0, void 0, function* () {
+    const usernameFound = yield data_source_1.CredentialModel.findOne({
+        where: {
+            username
+        }
+    });
+    if (usernameFound) {
+        throw new customError_1.CustomError(400, `El usuario ${username} ya existe, intente con otro nombre de usuario`);
+    }
+});
+const checkUserCredentials = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
+    const usernameFound = yield data_source_1.CredentialModel.findOne({
+        where: { username },
+    });
+    if (!usernameFound) {
+        throw new customError_1.CustomError(400, `Credenciales incorrectas`);
+    }
+    const isPasswordValid = yield bcryptjs_1.default.compare(password, usernameFound.password);
+    if (!isPasswordValid) {
+        throw new customError_1.CustomError(400, `Credenciales incorrectas`);
+    }
+    return usernameFound.id;
+});
+exports.checkUserCredentials = checkUserCredentials;
 const getCredentialService = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
-    checkUserExist(username);
-    const credential = {
-        id: id,
-        username: username,
-        password: password
-    };
-    credentials.push(credential);
-    id++;
-    return credential.id;
+    yield checkUserExist(username);
+    const bcryptPassword = yield bycrypt(password);
+    const newCredential = data_source_1.CredentialModel.create({
+        username,
+        password: bcryptPassword,
+    });
+    yield data_source_1.CredentialModel.save(newCredential);
+    return newCredential;
 });
 exports.getCredentialService = getCredentialService;

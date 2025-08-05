@@ -43,7 +43,7 @@ const getUserByIdController = (req, res) => __awaiter(void 0, void 0, void 0, fu
         });
     }
     catch (error) {
-        res.status(500).json({
+        res.status(404).json({
             msg: "Ocurrio un error",
             error: error instanceof Error ? error.message : "Error desconocido"
         });
@@ -52,14 +52,14 @@ const getUserByIdController = (req, res) => __awaiter(void 0, void 0, void 0, fu
 exports.getUserByIdController = getUserByIdController;
 const registerUserController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newuser = yield (0, userService_1.registerUserService)(req.body);
-        res.status(200).json({
+        const newUser = yield (0, userService_1.registerUserService)(req.body);
+        res.status(201).json({
             msg: "Registro de un nuevo usuario",
-            data: newuser
+            data: newUser
         });
     }
     catch (error) {
-        res.status(500).json({
+        res.status(400).json({
             msg: "Ocurrio un error",
             error: error instanceof Error ? error.message : "Error desconocido"
         });
@@ -68,14 +68,14 @@ const registerUserController = (req, res) => __awaiter(void 0, void 0, void 0, f
 exports.registerUserController = registerUserController;
 const loginUserController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        //await funcion ponemos dsp()
+        const user = yield (0, userService_1.loginUserService)(req.body);
         res.status(200).json({
             msg: "Login de un usuario",
-            data: req.body
+            data: user
         });
     }
     catch (error) {
-        res.status(500).json({
+        res.status(400).json({
             msg: "Ocurrio un error",
             error: error instanceof Error ? error.message : "Error desconocido"
         });

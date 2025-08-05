@@ -20,8 +20,8 @@ const getAppointmentsController = (req, res) => __awaiter(void 0, void 0, void 0
         });
     }
     catch (error) {
-        res.status(500).json({
-            msg: "Ocurrio un error",
+        res.status(400).json({
+            msg: "Error al obtener el listado de turnos",
             error: error instanceof Error ? error.message : "Error desconocido"
         });
     }
@@ -31,7 +31,7 @@ const getAppointmentsByIdController = (req, res) => __awaiter(void 0, void 0, vo
     try {
         const id = parseInt(req.params.id, 10);
         if (isNaN(id)) {
-            res.status(400).json({ msg: "El ID proporcionado no es válido" });
+            res.status(404).json({ msg: "El ID proporcionado no es válido" });
             return;
         }
         const appointmentFound = yield (0, appointmentsService_1.getAppointmentsByIdService)(id);
@@ -43,12 +43,12 @@ const getAppointmentsByIdController = (req, res) => __awaiter(void 0, void 0, vo
             return;
         }
         res.status(200).json({
-            msg: "Obtener el detalle de un turno especifico",
+            msg: "Obtencion de turno por ID",
             data: appointmentFound
         });
     }
     catch (error) {
-        res.status(500).json({
+        res.status(404).json({
             msg: "Ocurrio un error",
             error: error instanceof Error ? error.message : "Error desconocido"
         });
@@ -64,8 +64,8 @@ const registerAppointmentsController = (req, res) => __awaiter(void 0, void 0, v
         });
     }
     catch (error) {
-        res.status(500).json({
-            msg: "Ocurrio un error",
+        res.status(400).json({
+            msg: "Los datos son incorrectos",
             error: error instanceof Error ? error.message : "Error desconocido"
         });
     }
@@ -74,13 +74,14 @@ exports.registerAppointmentsController = registerAppointmentsController;
 const cancelStatusAppointmentsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, appointmentsService_1.cancelAppointmentsService)(parseInt(req.params.id, 10));
+        console.log("ID recibido:", req.params.id);
         res.status(200).json({
             msg: "Cita cancelada con exito",
         });
     }
     catch (error) {
-        res.status(500).json({
-            msg: "Ocurrio un error",
+        res.status(404).json({
+            msg: "El turno no fue encontrado",
             error: error instanceof Error ? error.message : "Error desconocido"
         });
     }

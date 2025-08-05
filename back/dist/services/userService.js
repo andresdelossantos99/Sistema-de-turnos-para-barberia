@@ -9,44 +9,47 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerUserService = exports.getUserByIdService = exports.getUserService = void 0;
+exports.loginUserService = exports.registerUserService = exports.getUserByIdService = exports.getUserService = void 0;
 const credentialServices_1 = require("../services/credentialServices");
-const users = [];
-let id = 1;
+const data_source_1 = require("../config/data-source");
+const validationUserAge_1 = require("../utils/validationUserAge");
 const getUserService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const nuevoArray = users.map(user => {
-        const objetoUser = {
-            id: user.id,
-            name: user.name,
-            email: user.email
-        };
-        return objetoUser;
+    const users = yield data_source_1.UserModel.find({
+        relations: { credentials: true }
     });
-    return nuevoArray;
+    return users;
 });
 exports.getUserService = getUserService;
 const getUserByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const userFound = users.find((user) => user.id === id);
+    const userFound = yield data_source_1.UserModel.findOne({
+        where: { id: id }, relations: ['appointments']
+    });
     if (!userFound)
         throw new Error(`"El usuario con el Id:${id} no fue encontrado"`);
-    return {
-        id: userFound.id,
-        name: userFound.name,
-        email: userFound.email
-    };
+    return userFound;
 });
 exports.getUserByIdService = getUserByIdService;
 const registerUserService = (user) => __awaiter(void 0, void 0, void 0, function* () {
+    (0, validationUserAge_1.validateUserAge)(user.name, user.birthdate);
     const credentialId = yield (0, credentialServices_1.getCredentialService)(user.username, user.password);
-    const newUser = {
-        id: id++,
+    const newUser = data_source_1.UserModel.create({
         name: user.name,
         email: user.email,
-        nDni: user.nDni,
         birthdate: new Date(user.birthdate),
-        credentialsId: credentialId
-    };
-    users.push(newUser);
+        nDni: user.nDni,
+        credentials: credentialId
+    });
+    yield data_source_1.UserModel.save(newUser);
     return newUser;
 });
 exports.registerUserService = registerUserService;
+const loginUserService = (userCredentials) => __awaiter(void 0, void 0, void 0, function* () {
+    const credentialId = yield (0, credentialServices_1.checkUserCredentials)(userCredentials.username, userCredentials.password);
+    const userFound = yield data_source_1.UserModel.findOne({
+        where: {
+            credentials: { id: credentialId }
+        },
+    });
+    return userFound;
+});
+exports.loginUserService = loginUserService;
